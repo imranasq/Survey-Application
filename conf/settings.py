@@ -4,6 +4,7 @@ import environ
 import dj_database_url
 
 from pathlib import Path
+from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,11 +29,25 @@ INSTALLED_APPS = [
 
     # third party
     'rest_framework',
+    'rest_framework.authtoken',
 
     # project
     'user',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ]
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+}
 # Applications only used when DEBUG = True
 
 # if DEBUG:
