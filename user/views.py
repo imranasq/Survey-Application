@@ -10,6 +10,9 @@ from django.urls import reverse_lazy
 from django.views.generic import View
 from django.views import generic
 
+from rest_framework import viewsets
+from .serializers import LoginSerializer
+from rest_framework.permissions import IsAuthenticated, AllowAny
 class SignUpView(generic.CreateView):
     template_name = 'register.html'
     form_class = SignUpForm
@@ -45,6 +48,11 @@ class LoginView(View):
             'login_form': form,
            }
         return render(request, "login.html", context)
+
+class UserView(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = LoginSerializer
+    queryset = User.objects.all()
 
 @login_required(login_url='login')
 def hello(request):
