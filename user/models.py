@@ -7,16 +7,24 @@ from . import managers
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    USER_CHOICES = (
+    ('Admin', 'Admin'),
+    ('Customer', 'Customer'),
+    )
     email = models.EmailField(_('Email Address'), unique=True)
-    name = models.CharField(_('Name'), max_length=30, null=True, blank=True)
+    username = models.CharField(_('Username'), max_length=30, null=True, blank=True)
+    first_name = models.CharField(max_length=30, null=True,blank=True)
+    last_name = models.CharField(max_length=30, null=True, blank=True)
+    user_type=models.CharField(max_length=10, choices=USER_CHOICES,null=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(_('Active'), default=False)
     date_joined = models.DateTimeField(_('Date Joined'), auto_now_add=True)
+    is_admin = models.BooleanField(default=False)
 
     objects = managers.UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name', ]
+    REQUIRED_FIELDS = ['username', ]
 
     def __str__(self):
-        return self.name
+        return self.username
