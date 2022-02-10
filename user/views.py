@@ -46,7 +46,7 @@ class LoginView(View):
            }
         return render(request, "login.html", context)
 
-
+@login_required(login_url='login')
 def hello(request):
     return HttpResponse('Hello World')
 
