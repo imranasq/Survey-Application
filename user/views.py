@@ -1,13 +1,21 @@
 from django.http import HttpResponse
-from .forms import UserLoginForm
+from .forms import UserLoginForm, SignUpForm
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-
+from django.contrib.messages.views import SuccessMessageMixin
 from .models import User
-
+from django.urls import reverse_lazy
 from django.views.generic import View
+from django.views import generic
+
+class SignUpView(generic.CreateView):
+    template_name = 'register.html'
+    form_class = SignUpForm
+    success_url = reverse_lazy('login')
+    success_message = "Your profile was created successfully"
+
 
 class LoginView(View):
     model = User
@@ -41,7 +49,6 @@ class LoginView(View):
 
 def hello(request):
     return HttpResponse('Hello World')
-
 
 @login_required(login_url='login')
 def AdminHomeView(request):

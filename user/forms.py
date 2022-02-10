@@ -18,3 +18,13 @@ class UserLoginForm(forms.ModelForm):
             if not authenticate(email=email, password=password):
                 raise forms.ValidationError("Invalid Email or Password")
 
+class SignUpForm(UserCreationForm):
+    email = forms.EmailField(widget = forms.EmailInput(attrs = {'class': 'form-control', 'placeholder' : 'email'}))
+    username = forms.CharField(max_length=50, widget = forms.TextInput(attrs = {'class': 'form-control', 'placeholder' : 'username'}))
+    first_name = forms.CharField(max_length=50, widget = forms.TextInput(attrs = {'class': 'form-control', 'placeholder' : 'First Name'}))
+    last_name = forms.CharField(max_length=50,  widget = forms.TextInput(attrs = {'class': 'form-control', 'placeholder' : 'Last Name'}))
+    class Meta:
+        model = User
+        fields = ('email','username','first_name','last_name','password1','password2')
+
+    
