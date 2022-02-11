@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "../base.html" %}
 
 
 {% block body %}
@@ -26,12 +26,15 @@
                 <td>{{ survey.created_at }}</td>
                 <td>
                     {% if survey.is_active %}
-                    <a href="">
-                        <div class="ui button">view</div>
+                    <a href="{% url 'survey-edit' survey.pk %}">
+                        <div class="ui button">Edit</div>
                     </a>
                     {% else %}
                     {% endif %}
+                    <form method="post" action="#" style="display: inline-block;">
+                        {% csrf_token %}
                         <button class=" ui button">delete</button>
+                    </form>
                 </td>
             </tr>
             {% endfor %}

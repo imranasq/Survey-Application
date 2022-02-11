@@ -12,3 +12,8 @@ class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
         fields = ["title"]
+
+class OptionForm(forms.ModelForm):
+    class Meta:
+        model = Option
+        fields = ["text"]
