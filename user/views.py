@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from .forms import UserLoginForm, SignUpForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -75,3 +75,7 @@ def CustomerHomeView(request):
         'users' : customer_obj,
     }
     return render(request, "customer-panel.html", context)
+
+def logout_view(request):
+    logout(request)
+    return redirect('/')

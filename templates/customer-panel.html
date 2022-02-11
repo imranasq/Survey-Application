@@ -55,7 +55,7 @@
                 {% endfor %}
             </div>
         </div>
-        <a href=""><input type="submit" class="btn btn-danger" value="Logout"></a>
+        <a href="{% url 'logout' %}"><input type="submit" class="btn btn-danger" value="Logout"></a>
     
     {% endif %}
 {% endblock %}
