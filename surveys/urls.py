@@ -1,5 +1,6 @@
 from django.urls import path
+from .views import survey_list
 
 urlpatterns = [
-    #path
+    path("surveys/", survey_list, name="survey-list"),
 ]
