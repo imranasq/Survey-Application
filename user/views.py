@@ -14,7 +14,7 @@ from rest_framework import viewsets
 from .serializers import LoginSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 class SignUpView(generic.CreateView):
-    template_name = 'register.html'
+    template_name = 'user/register.html'
     form_class = SignUpForm
     success_url = reverse_lazy('login')
     success_message = "Your profile was created successfully"
@@ -22,7 +22,7 @@ class SignUpView(generic.CreateView):
 
 class LoginView(View):
     model = User
-    template_name = "login.html"
+    template_name = "user/login.html"
 
     def post(self, request):
         email = request.POST['email']
@@ -47,7 +47,7 @@ class LoginView(View):
         context = {
             'login_form': form,
            }
-        return render(request, "login.html", context)
+        return render(request, "user/login.html", context)
 
 class UserView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
@@ -61,7 +61,7 @@ def hello(request):
 
 class AdminPanelView(TemplateView):
     model = User
-    template_name = "admin-panel.html"
+    template_name = "user/admin-panel.html"
 
     def get_context_data(self, **kwargs):
         filtered_user = User.objects.filter(email=self.request.user.email)
@@ -74,7 +74,7 @@ class AdminPanelView(TemplateView):
 
 class CustomerPanelView(TemplateView):
     model = User
-    template_name = "customer-panel.html"
+    template_name = "user/customer-panel.html"
 
     def get_context_data(self, **kwargs):
         filtered_user = User.objects.filter(email=self.request.user.email)

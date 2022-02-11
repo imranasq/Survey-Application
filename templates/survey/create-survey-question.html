@@ -1,0 +1,23 @@
+{% extends "../base.html" %}
+
+
+{% block body %}
+<div class="ui center aligned basic very padded segment">
+    <h1 class="ui header">Create a new question</h1>
+    <div class="ui container left aligned">
+        <form class="ui form" method="post" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="field">
+                <label>{{ field.label_tag }}</label>
+                {{ field }}
+            </div>
+            {% endfor %}
+            <button type="submit" class="ui primary button">Create question</button>
+            <a href="{% url 'survey-edit' survey.pk %}">
+                <div class="ui button">Cancel</div>
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %}
