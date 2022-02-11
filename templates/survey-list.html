@@ -4,6 +4,9 @@
 {% block body %}
 <div class="ui center aligned basic very padded segment">
     <h1 class="ui header">Welcome {{ request.user.username }}</h1>
+    <a href="{% url 'create-survey' %}">
+        <div class="ui primary button">Create a new survey</div>
+    </a>
 </div>
 <div class="ui center aligned basic very padded segment">
     {% if surveys %}

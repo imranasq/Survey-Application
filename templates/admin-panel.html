@@ -46,6 +46,22 @@
                                 </div>
                               </div>
                               <hr>
+                              <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Go to your Surveys </h6>
+                                  </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <a href="{% url 'survey-list' %}"><input type="submit" class="btn btn-primary" value="Survey List"></a>
+                                </div>
+                              </div>
+                              <hr>
+                              <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Create New Surveys </h6>
+                                  </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <a href="{% url 'create-survey' %}"><input type="submit" class="btn btn-primary" value="Create Survey"></a>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -54,7 +70,7 @@
                   {% endif %}
                 {% endfor %}
             </div>
-            <a href="{% url 'survey-list' %}"><input type="submit" class="btn btn-primary" value="Survey List"></a>
+
         </div>
         <a href="{% url 'logout' %}"><input type="submit" class="btn btn-danger" value="Logout"></a>
     

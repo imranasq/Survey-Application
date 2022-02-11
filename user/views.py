@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.messages.views import SuccessMessageMixin
 from .models import User
 from django.urls import reverse_lazy
-from django.views.generic import View
+from django.views.generic import View, TemplateView
 from django.views import generic
 
 from rest_framework import viewsets
@@ -58,23 +58,32 @@ class UserView(viewsets.ModelViewSet):
 def hello(request):
     return HttpResponse('Hello World')
 
-@login_required(login_url='login')
-def AdminHomeView(request):
-    context = {}
-    admin_obj = User.objects.filter(email = request.user.email)
-    context = {
-        'users' : admin_obj,
-    }
-    return render(request, "admin-panel.html", context)
 
-@login_required(login_url='login')
-def CustomerHomeView(request):
-    context = {}
-    customer_obj = User.objects.filter(email = request.user.email)
-    context = {
-        'users' : customer_obj,
-    }
-    return render(request, "customer-panel.html", context)
+class AdminPanelView(TemplateView):
+    model = User
+    template_name = "admin-panel.html"
+
+    def get_context_data(self, **kwargs):
+        filtered_user = User.objects.filter(email=self.request.user.email)
+        if filtered_user.exists():
+            users = filtered_user
+        context = {
+            'users': users
+        }
+        return context
+
+class CustomerPanelView(TemplateView):
+    model = User
+    template_name = "customer-panel.html"
+
+    def get_context_data(self, **kwargs):
+        filtered_user = User.objects.filter(email=self.request.user.email)
+        if filtered_user.exists():
+            users = filtered_user
+        context = {
+            'users': users
+        }
+        return context
 
 def logout_view(request):
     logout(request)
