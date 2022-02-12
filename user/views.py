@@ -13,6 +13,8 @@ from django.views import generic
 from rest_framework import viewsets
 from .serializers import LoginSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
+
+
 class SignUpView(generic.CreateView):
     template_name = 'user/register.html'
     form_class = SignUpForm

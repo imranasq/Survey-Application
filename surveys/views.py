@@ -36,7 +36,6 @@ class SurveyCreateView(CreateView):
 
 @login_required
 def edit_survey(request, pk):
-    """User can add questions to a draft survey, then acitvate the survey"""
     try:
         survey = Survey.objects.prefetch_related("question_set__option_set").get(
             pk=pk, creator=request.user
@@ -52,6 +51,13 @@ def edit_survey(request, pk):
         questions = survey.question_set.all()
         return render(request, "survey/edit-survey.html", {"survey": survey, "questions": questions})
 
+@login_required
+def delete_survey(request, pk):
+    survey = get_object_or_404(Survey, pk=pk, creator=request.user)
+    if request.method == "POST":
+        survey.delete()
+
+    return redirect("survey-list")
 
 # class QuestionCreateView(CreateView):
 #     template_name = "survey/survey-question.html"
@@ -68,7 +74,6 @@ def edit_survey(request, pk):
 
 @login_required
 def question_create(request, pk):
-    """User can add a question to a draft survey"""
     survey = get_object_or_404(Survey, pk=pk, creator=request.user)
     if request.method == "POST":
         form = QuestionForm(request.POST)
@@ -83,7 +88,6 @@ def question_create(request, pk):
     return render(request, "survey/create-survey-question.html", {"survey": survey, "form": form})
 @login_required
 def option_create(request, survey_pk, question_pk):
-    """User can add options to a survey question"""
     survey = get_object_or_404(Survey, pk=survey_pk, creator=request.user)
     question = Question.objects.get(pk=question_pk)
     if request.method == "POST":
