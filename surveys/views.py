@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy, reverse
-from .models import Survey, Question
+from .models import Response, Survey, Question
 from django.http import Http404
 from .forms import SurveyForm, QuestionForm, OptionForm
 from django.views.generic import ListView, CreateView
@@ -28,7 +28,6 @@ class SurveyCreateView(CreateView):
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
-        form.instance.is_active=True
         return super(SurveyCreateView, self).form_valid(form)
 
     def get_success_url(self):
@@ -115,3 +114,22 @@ def option_create(request, survey_pk, question_pk):
         "form": form
     }
     return render(request, "survey/create-options.html", context)
+
+@login_required
+def active_survey_list(request):
+    surveys = Survey.objects.filter(is_active=True)
+    context={
+        "surveys": surveys
+    }
+    return render(request, "survey/active-survey-list.html", context)
+
+@login_required
+def start_survey(request, pk):
+    survey = get_object_or_404(Survey, pk=pk, is_active=True)
+    if request.method == "POST":
+        response = Response.objects.create(survey=survey)
+        return redirect("survey-submit", survey_pk=pk, response_pk=response.pk)
+    context={
+        "survey": survey
+    }
+    return render(request, "survey/start-survey.html", context)

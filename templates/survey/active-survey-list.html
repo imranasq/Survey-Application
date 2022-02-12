@@ -1,0 +1,44 @@
+{% extends "../base.html" %}
+
+
+{% block body %}
+<div class="ui center aligned basic very padded segment">
+    <h1 class="ui header">Welcome {{ request.user.username }}</h1>
+        <div class="ui primary button">Take a Survey</div>
+</div>
+<div class="ui center aligned basic very padded segment">
+    {% if surveys %}
+    <h2 class="ui header">Active Surveys List</h2>
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for survey in surveys %}
+            <tr>
+                <td>{{ survey.title }}</td>
+                <td>{{ survey.created_at }}</td>
+                <td>
+                    {% if survey.is_active %}
+                    <a href="{% url 'survey-start' survey.pk %}">
+                        <div class="ui button">Take a tour</div>
+                    </a>
+                    {% else %}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <h2 class="ui header">Your surveys
+        <div class="sub header">There is no Active surveys at this moment. Please wait for assigning new survey.</div>
+    </h2>
+    {% endif %}
+
+</div>
+{% endblock %}
