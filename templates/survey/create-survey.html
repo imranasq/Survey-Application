@@ -10,9 +10,12 @@
             {{ form.as_p }}
             <input type="submit" value="Save">
         </form>
-        <a href="{% url 'survey-list' %}">
+        <a href="{% url 'survey_list' %}">
             <div class="ui button">Cancel</div>
         </a>
     </div>
+    <h3 style="float:right;">
+        <a href="{% url 'logout' %}"><input type="submit" class="btn btn-danger" value="Logout"></a>
+    </h3>
 </div>
 {% endblock %}

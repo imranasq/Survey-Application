@@ -20,7 +20,7 @@
 
         </div>
         {% endfor %}
-        <a href="{% url 'survey-question-create' survey.pk %}">
+        <a href="{% url 'survey_question_create' survey.pk %}">
             <div class="ui button">Add a question</div>
         </a>
         {% if questions|length > 0 %}
@@ -29,10 +29,13 @@
             {% csrf_token %}
             <button type="submit" class="ui primary button">Activate survey</button>
         </form>
-        <a href="{% url 'survey-list' %}">
+        <a href="{% url 'survey_list' %}">
             <div class="ui button">Back</div>
         </a>
         {% endif %}
     </div>
+    <h3 style="float:right;">
+        <a href="{% url 'logout' %}"><input type="submit" class="btn btn-danger" value="Logout"></a>
+    </h3>
 </div>
 {% endblock %}

@@ -25,10 +25,13 @@
         </form>
         {% if options|length > 0 %}
         <div class="ui divider"></div>
-        <a href="{% url 'survey-edit' survey.pk %}">
+        <a href="{% url 'survey_edit' survey.pk %}">
             <div class="ui button">Done adding options</div>
         </a>
         {% endif %}
     </div>
+    <h3 style="float:right;">
+        <a href="{% url 'logout' %}"><input type="submit" class="btn btn-danger" value="Logout"></a>
+    </h3>
 </div>
 {% endblock %}

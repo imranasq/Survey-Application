@@ -14,10 +14,13 @@
             </div>
             {% endfor %}
             <button type="submit" class="ui primary button">Create question</button>
-            <a href="{% url 'survey-edit' survey.pk %}">
+            <a href="{% url 'survey_edit' survey.pk %}">
                 <div class="ui button">Cancel</div>
             </a>
         </form>
     </div>
+    <h3 style="float:right;">
+        <a href="{% url 'logout' %}"><input type="submit" class="btn btn-danger" value="Logout"></a>
+    </h3>
 </div>
 {% endblock %}

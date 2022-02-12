@@ -5,9 +5,12 @@
     <h1 class="ui header">Title: {{ survey.title }}
         <div class="sub header">You have been invited to take this survey</div>
     </h1>
-    <form method="post" action="{% url 'survey-start' survey.pk %}" style="display: inline-block;">
+    <form method="post" action="{% url 'survey_start' survey.pk %}" style="display: inline-block;">
         {% csrf_token %}
         <button type="submit" class="ui primary button">Start survey
     </form>
 </div>
+<h3 style="text-align: center">
+    <a href="{% url 'active_survey' %}"><input type="submit" class="btn btn-info" value="Back"></a>
+</h3>
 {% endblock %}

@@ -1,0 +1,35 @@
+{% extends "../base.html" %}
+
+{% block body %}
+<div class="ui center aligned basic very padded segment">
+    <h1 class="ui header"> Title: {{ survey.title }}</h1>
+    {% if responses %}
+    <h3 class="ui header">You have {{ resoponses }} customers responses.</h3>
+    {% endif %}
+    <h3 class="ui header">You have 0 customer response.</h3>
+    <h1 class="ui header dividing">Survey result</h1>
+    {% for question in questions %}
+    <div class="ui basic padded segment left aligned">
+        <h4 class="ui header">
+            Question {{ forloop.counter }} / {{ questions|length }}: {{ question.title }}
+        </h4>
+        <ul>
+            {% for option in question.option_set.all %}
+            <ul>
+                {{ forloop.counter }}. {{option.text}}: {{ option.percent|floatformat }}%
+            </ul>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+    <h3 style="text-align: center;">
+        <a href="{% url 'survey_list' %}"><input type="submit" class="btn btn-primary" value="Surveys"></a>
+    <h3 style="float:left;">
+        <a href="{% url 'admin_panel' %}"><input type="submit" class="btn btn-info" value="Admin Dashboard"></a>
+    </h3>
+    </h3>
+    <h3 style="float:right;">
+        <a href="{% url 'logout' %}"><input type="submit" class="btn btn-danger" value="Logout"></a>
+    </h3>
+</div>
+{% endblock %}

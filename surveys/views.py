@@ -1,13 +1,16 @@
+from multiprocessing import context
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy, reverse
-from .models import Response, Survey, Question
+from .models import Response, Survey, Question, Answer
 from django.http import Http404
 from .forms import SurveyForm, QuestionForm, OptionForm
 from django.views.generic import ListView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
-class SurveyListView(ListView):
+class SurveyListView(LoginRequiredMixin,ListView):
+    login_url = '/login/'
     model = Survey
     template_name = "survey/survey-list.html"
 
@@ -21,7 +24,8 @@ class SurveyListView(ListView):
             return context
 
 
-class SurveyCreateView(CreateView):
+class SurveyCreateView(LoginRequiredMixin, CreateView):
+    login_url = '/login/'
     template_name = "survey/create-survey.html"
     form_class = SurveyForm
 
@@ -33,7 +37,7 @@ class SurveyCreateView(CreateView):
     def get_success_url(self):
         return reverse('survey-edit', kwargs={'pk': self.object.pk})
 
-@login_required
+@login_required(login_url='login')
 def edit_survey(request, pk):
     try:
         survey = Survey.objects.prefetch_related("question_set__option_set").get(pk=pk, creator=request.user)
@@ -52,7 +56,7 @@ def edit_survey(request, pk):
         }
         return render(request, "survey/edit-survey.html", context)
 
-@login_required
+@login_required(login_url='login')
 def delete_survey(request, pk):
     survey = get_object_or_404(Survey, pk=pk, creator=request.user)
     if request.method == "POST":
@@ -73,7 +77,7 @@ def delete_survey(request, pk):
 #         print(form.instance.servey)
 #         return super(SurveyCreateView, self).form_valid(form)
 
-@login_required
+@login_required(login_url='login')
 def question_create(request, pk):
     survey = get_object_or_404(Survey, pk=pk, creator=request.user)
     if request.method == "POST":
@@ -93,7 +97,7 @@ def question_create(request, pk):
 
     return render(request, "survey/create-survey-question.html", context)
 
-@login_required
+@login_required(login_url='login')
 def option_create(request, survey_pk, question_pk):
     survey = get_object_or_404(Survey, pk=survey_pk, creator=request.user)
     question = Question.objects.get(pk=question_pk)
@@ -115,7 +119,7 @@ def option_create(request, survey_pk, question_pk):
     }
     return render(request, "survey/create-options.html", context)
 
-@login_required
+@login_required(login_url='login')
 def active_survey_list(request):
     surveys = Survey.objects.filter(is_active=True)
     context={
@@ -123,7 +127,7 @@ def active_survey_list(request):
     }
     return render(request, "survey/active-survey-list.html", context)
 
-@login_required
+@login_required(login_url='login')
 def start_survey(request, pk):
     survey = get_object_or_404(Survey, pk=pk, is_active=True)
     if request.method == "POST":
@@ -133,3 +137,27 @@ def start_survey(request, pk):
         "survey": survey
     }
     return render(request, "survey/start-survey.html", context)
+
+@login_required
+def survey_report(request, pk):
+    try:
+        survey = Survey.objects.prefetch_related("question_set__option_set").get(pk=pk, creator=request.user, is_active=True)
+    except Survey.DoesNotExist:
+        raise Http404()
+
+    questions = survey.question_set.all()
+
+    for question in questions:
+        option_pks = question.option_set.values_list("pk", flat=True)
+        total_answers = Answer.objects.filter(option_id__in=option_pks).count()
+        for option in question.option_set.all():
+            num_answers = Answer.objects.filter(option=option).count()
+            option.percent = 100.0 * num_answers / total_answers if total_answers else 0
+
+    responses = survey.response_set.filter(is_complete=True).count()
+    context = {
+        "survey": survey,
+        "questions": questions,
+        "responses": responses
+    }
+    return render(request, "survey/survey-report.html", context)
