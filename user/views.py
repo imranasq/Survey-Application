@@ -51,10 +51,6 @@ class LoginView(View):
            }
         return render(request, "user/login.html", context)
 
-class UserView(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
-    serializer_class = LoginSerializer
-    queryset = User.objects.all()
 
 @login_required(login_url='login')
 def hello(request):
@@ -87,6 +83,12 @@ class CustomerPanelView(TemplateView):
         }
         return context
 
-def logout_view(request):
-    logout(request)
-    return redirect('/')
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return HttpResponseRedirect("/login")
+
+class UserView(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = LoginSerializer
+    queryset = User.objects.all()

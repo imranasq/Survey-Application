@@ -37,9 +37,7 @@ class SurveyCreateView(CreateView):
 @login_required
 def edit_survey(request, pk):
     try:
-        survey = Survey.objects.prefetch_related("question_set__option_set").get(
-            pk=pk, creator=request.user
-        )
+        survey = Survey.objects.prefetch_related("question_set__option_set").get(pk=pk, creator=request.user)
     except Survey.DoesNotExist:
         raise Http404()
 
@@ -49,7 +47,11 @@ def edit_survey(request, pk):
         return redirect("survey-list")
     else:
         questions = survey.question_set.all()
-        return render(request, "survey/edit-survey.html", {"survey": survey, "questions": questions})
+        context={
+            "survey": survey,
+            "questions": questions
+        }
+        return render(request, "survey/edit-survey.html", context)
 
 @login_required
 def delete_survey(request, pk):
@@ -85,7 +87,13 @@ def question_create(request, pk):
     else:
         form = QuestionForm()
 
-    return render(request, "survey/create-survey-question.html", {"survey": survey, "form": form})
+    context={
+        "survey": survey,
+        "form": form
+    }
+
+    return render(request, "survey/create-survey-question.html", context)
+
 @login_required
 def option_create(request, survey_pk, question_pk):
     survey = get_object_or_404(Survey, pk=survey_pk, creator=request.user)
