@@ -26,3 +26,18 @@ class Option(models.Model):
     text = models.CharField(max_length=128)
     def __str__(self):
         return self.text
+
+class Response(models.Model):
+    survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_complete = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.survey
+
+class Answer(models.Model):
+    response = models.ForeignKey(Response, on_delete=models.CASCADE)
+    option = models.ForeignKey(Option, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.response
