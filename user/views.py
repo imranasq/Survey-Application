@@ -9,6 +9,7 @@ from .models import User
 from django.urls import reverse_lazy
 from django.views.generic import View, TemplateView
 from django.views import generic
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from rest_framework import viewsets
 from .serializers import LoginSerializer
@@ -16,7 +17,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
 class SignUpView(generic.CreateView):
-    template_name = 'user/register.html'
+    template_name = 'user/user-registration.html'
     form_class = SignUpForm
     success_url = reverse_lazy('login')
     success_message = "Your profile was created successfully"
@@ -24,7 +25,7 @@ class SignUpView(generic.CreateView):
 
 class LoginView(View):
     model = User
-    template_name = "user/login.html"
+    template_name = "user/user-login.html"
 
     def post(self, request):
         email = request.POST['email']
@@ -49,7 +50,7 @@ class LoginView(View):
         context = {
             'login_form': form,
            }
-        return render(request, "user/login.html", context)
+        return render(request, "user/user-login.html", context)
 
 
 @login_required(login_url='login')
@@ -57,7 +58,8 @@ def hello(request):
     return HttpResponse('Hello World')
 
 
-class AdminPanelView(TemplateView):
+class AdminPanelView(LoginRequiredMixin,TemplateView):
+    login_url = '/login/'
     model = User
     template_name = "user/admin-panel.html"
 
@@ -70,7 +72,8 @@ class AdminPanelView(TemplateView):
         }
         return context
 
-class CustomerPanelView(TemplateView):
+class CustomerPanelView(LoginRequiredMixin, TemplateView):
+    login_url = '/login/'
     model = User
     template_name = "user/customer-panel.html"
 

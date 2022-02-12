@@ -51,7 +51,7 @@
                                     <h6 class="mb-0">Take your Surveys </h6>
                                   </div>
                                 <div class="col-sm-9 text-secondary">
-                                    <a href="{% url 'active-survey' %}"><input type="submit" class="btn btn-primary" value="Survey List"></a>
+                                    <a href="{% url 'active_survey' %}"><input type="submit" class="btn btn-primary" value="Survey List"></a>
                                 </div>
                               </div>
                               </div>
@@ -63,7 +63,8 @@
                 {% endfor %}
             </div>
         </div>
-        <a href="{% url 'logout' %}"><input type="submit" class="btn btn-danger" value="Logout"></a>
-    
+        <h3 style="float:right;">
+          <a href="{% url 'logout' %}"><input type="submit" class="btn btn-danger" value="Logout"></a>
+      </h3>
     {% endif %}
 {% endblock %}
