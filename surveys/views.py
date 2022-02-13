@@ -1,20 +1,21 @@
-from cmath import log
-from multiprocessing import context
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.urls import reverse_lazy, reverse
-from .models import Response, Survey, Question, Answer
-from django.http import Http404
-from .forms import SurveyForm, QuestionForm, OptionForm, AnswerForm, BaseAnswerFormSet
-from django.views.generic import ListView, CreateView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
 from django.db import transaction
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.views.generic import ListView, CreateView
+
+from .models import Response, Survey, Question, Answer
+
+from .forms import SurveyForm, QuestionForm, OptionForm, AnswerForm, BaseAnswerFormSet
 from django.forms.formsets import formset_factory
 
 # Create your views here.
 class SurveyListView(LoginRequiredMixin,ListView):
-    login_url = '/login/'
-    model = Survey
+    login_url     = '/login/'
+    model         = Survey
     template_name = "survey/survey-list.html"
 
     def get_context_data(self, **kwargs):
@@ -28,9 +29,9 @@ class SurveyListView(LoginRequiredMixin,ListView):
 
 
 class SurveyCreateView(LoginRequiredMixin, CreateView):
-    login_url = '/login/'
+    login_url     = '/login/'
     template_name = "survey/create-survey.html"
-    form_class = SurveyForm
+    form_class    = SurveyForm
 
 
     def form_valid(self, form):
@@ -49,9 +50,9 @@ def edit_survey(request, pk):
         return redirect("survey_list")
     else:
         questions = survey.question_set.all()
-        context={
-            "survey": survey,
-            "questions": questions
+        context = {
+            "survey"    : survey,
+            "questions" : questions
         }
         return render(request, "survey/edit-survey.html", context)
 
@@ -88,16 +89,16 @@ def question_create(request, pk):
     else:
         form = QuestionForm()
 
-    context={
-        "survey": survey,
-        "form": form
+    context = {
+        "survey" : survey,
+        "form"   : form
     }
 
     return render(request, "survey/create-survey-question.html", context)
 
 @login_required
 def option_create(request, survey_pk, question_pk):
-    survey = get_object_or_404(Survey, pk=survey_pk, creator=request.user)
+    survey   = get_object_or_404(Survey, pk=survey_pk, creator=request.user)
     question = Question.objects.get(pk=question_pk)
     if request.method == "POST":
         form = OptionForm(request.POST)
@@ -110,17 +111,17 @@ def option_create(request, survey_pk, question_pk):
 
     options = question.option_set.all()
     context = {
-        "survey": survey,
-        "question": question,
-        "options": options,
-        "form": form
+        "survey"   : survey,
+        "question" : question,
+        "options"  : options,
+        "form"     : form
     }
     return render(request, "survey/create-options.html", context)
 
 @login_required
 def active_survey_list(request):
     surveys = Survey.objects.filter(is_active=True).exclude(response_by = request.user)
-    context={
+    context = {
         "surveys": surveys
     }
     return render(request, "survey/active-survey-list.html", context)
@@ -130,8 +131,8 @@ def start_survey(request, pk):
     survey = get_object_or_404(Survey, pk=pk, is_active=True)
     if request.method == "POST":
         response = Response.objects.create(survey=survey)
-        return redirect("survey_response", survey_pk=pk, response_pk = response.pk)
-    context={
+        return redirect("survey_response", survey_pk = pk, response_pk = response.pk)
+    context = {
         "survey": survey
     }
     return render(request, "survey/start-survey.html", context)
@@ -153,10 +154,10 @@ def survey_report(request, pk):
                 option.percent = 0
 
     responses = survey.response_set.filter(is_complete=True).count()
-    context = {
-        "survey": survey,
-        "questions": questions,
-        "responses": responses
+    context   = {
+        "survey"    : survey,
+        "questions" : questions,
+        "responses" : responses
     }
     return render(request, "survey/survey-report.html", context)
 
@@ -167,7 +168,8 @@ def survey_response(request, survey_pk, response_pk):
 
     questions = survey.question_set.all()
     options = [question.option_set.all() for question in questions]
-    form_kwargs = {"empty_permitted": False, "options": options}
+
+    form_kwargs   = {"empty_permitted": False, "options": options}
     AnswerFormSet = formset_factory(AnswerForm, extra=len(questions), formset=BaseAnswerFormSet)
     if request.method == "POST":
         formset = AnswerFormSet(request.POST, form_kwargs=form_kwargs)
@@ -188,9 +190,9 @@ def survey_response(request, survey_pk, response_pk):
         formset = AnswerFormSet(form_kwargs=form_kwargs)
 
     question_forms = zip(questions, formset)
-    context={
-        "survey": survey,
-        "question_forms": question_forms,
-        "formset": formset
+    context = {
+        "survey"         : survey,
+        "question_forms" : question_forms,
+        "formset"        : formset
     }
     return render(request, "survey/survey-response.html", context)
