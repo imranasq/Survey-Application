@@ -3,12 +3,10 @@ from user.models import User
 
 # Create your models here.
 
-
-
 class Survey(models.Model):
-    title=models.CharField(max_length=255, null=True)
+    title = models.CharField(max_length=255, null=True)
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="creator")
-    response_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="responder", null=True, blank=True)
+    response_by = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="responder", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=False)
 
@@ -16,7 +14,7 @@ class Survey(models.Model):
         return self.title
 
 class Question(models.Model):
-    title=models.CharField(max_length=255, null=True)
+    title = models.CharField(max_length=255, null=True)
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
     Answer=models.CharField(max_length=255, null=True, blank=True)
 
