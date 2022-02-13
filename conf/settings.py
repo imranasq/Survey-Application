@@ -14,8 +14,7 @@ environ.Env.read_env(env_file)
 
 AUTH_USER_MODEL = 'user.User'
 SECRET_KEY = env('SECRET_KEY')
-DEBUG = True
-# DEBUG = env('DEBUG', default=(bool, True))
+DEBUG = env('DEBUG', default=(bool, True))
 ALLOWED_HOSTS = env('ALLOWED_HOSTS').split(',')
 
 INSTALLED_APPS = [
