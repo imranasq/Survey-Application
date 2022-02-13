@@ -33,21 +33,21 @@ Install all required packages.
 pip install -r requirements.txt
 ```
 
-Create a `.env` file copying from `.env.keep` file and update these values.
+Open `.env.keep` file and update these values.
 ```env
 # Comma separated hosts or IPs, set * to allow all
 ALLOWED_HOSTS=127.0.0.1
-# DEBUG=True
+DEBUG=True
 # Secret key should be atleast 32 characters long and consists of alphanumeric and special characters
 SECRET_KEY=****
-#Create a database on postgres and update `DB_URL` according to your credentials
+#Create a database on postgres and update DB_URL according to your credentials
 DB_URL=postgres://USER:PASSWORD@HOST:PORT/NAME
 ```
 If you do any update on models run this command
 ```sh
 python manage.py makemigrations
 ```
-Run migrations to apply those on database
+Run migrations to apply changes on database
 ```sh
 python manage.py migrate
 ```
