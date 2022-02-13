@@ -35,7 +35,7 @@ class LoginView(View):
         if user is not None:
             if user.is_admin:
                 login(request, user)
-                return HttpResponseRedirect('/admin-panel')
+                return HttpResponseRedirect('/')
             elif user.user_type=="Customer":
                 login(request, user)
                 return redirect('/customer-panel')
@@ -52,10 +52,6 @@ class LoginView(View):
            }
         return render(request, "user/user-login.html", context)
 
-
-@login_required(login_url='login')
-def hello(request):
-    return HttpResponse('Hello World')
 
 
 class AdminPanelView(LoginRequiredMixin,TemplateView):

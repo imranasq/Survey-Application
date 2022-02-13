@@ -25,7 +25,7 @@
                 <td>
                     {% if survey.is_active %}
                     <a href="{% url 'survey_start' survey.pk %}">
-                        <div class="ui button">Take a tour</div>
+                        <div class="btn btn-success">Take a tour</div>
                     </a>
                     {% else %}
                     {% endif %}
@@ -40,7 +40,7 @@
     </h2>
     {% endif %}
     <h3 style="float:left;">
-        <a href="{% url 'customer_panel' %}"><input type="submit" class="btn btn-info" value="User Dashboard"></a>
+        <a href="{% url 'customer_panel' %}"><input type="submit" class="btn btn-info" value="User Panel"></a>
     </h3>
     <h3 style="float:right;">
         <a href="{% url 'logout' %}"><input type="submit" class="btn btn-danger" value="Logout"></a>

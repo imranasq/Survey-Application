@@ -8,10 +8,10 @@
         <form class="ui form" method="post" novalidate>
             {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="Save">
+            <input type="submit" class="btn btn-success" value="Save">
         </form>
         <a href="{% url 'survey_list' %}">
-            <div class="ui button">Cancel</div>
+            <div class="btn btn-secondary">Cancel</div>
         </a>
     </div>
     <h3 style="float:right;">

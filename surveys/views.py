@@ -66,9 +66,8 @@ def delete_survey(request, pk):
 # class QuestionCreateView(CreateView):
 #     template_name = "survey/survey-question.html"
 #     form_class = QuestionForm
-#     success_url = reverse_lazy("survey-list")
+#     success_url = reverse_lazy("survey_list")
 
-#return redirect("survey-edit", pk=survey.id)
 #     def form_valid(self, form):
 #         survey = get_object_or_404(Survey, pk=self.kwargs['pk'], creator=self.request.user)
 #         print("---------------------------",survey)
@@ -147,7 +146,11 @@ def survey_report(request, pk):
         total_answers = Answer.objects.filter(option_id__in=option_pks).count()
         for option in question.option_set.all():
             num_answers = Answer.objects.filter(option=option).count()
-            option.percent = 100.0 * num_answers / total_answers if total_answers else 0
+            if total_answers:
+                option.percent = 100.0 * num_answers / total_answers
+
+            else:
+                option.percent = 0
 
     responses = survey.response_set.filter(is_complete=True).count()
     context = {

@@ -6,7 +6,7 @@
 
 {% block body %}
     {% if user.is_authenticated %}
-        <h1>Admin Home</h1>
+        <h1 style="text-align: center;">Admin Home</h1>
         <div class="container">
             <div class="main-body">
                 {% for user in users %}
@@ -60,7 +60,16 @@
                                     <h6 class="mb-0">Create New Surveys </h6>
                                   </div>
                                 <div class="col-sm-9 text-secondary">
-                                    <a href="{% url 'create_survey' %}"><input type="submit" class="btn btn-primary" value="Create Survey"></a>
+                                    <a href="{% url 'create_survey' %}"><input type="submit" class="btn btn-secondary" value="Create Survey"></a>
+                                </div>
+                              </div>
+                              <hr>
+                              <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Go to Admin Dashboard </h6>
+                                  </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <a href="/admin"><input type="submit" class="btn btn-info" value="Dashboard"></a>
                                 </div>
                               </div>
                             </div>
