@@ -4,9 +4,11 @@
 <div class="ui center aligned basic very padded segment">
     <h1 class="ui header"> Title: {{ survey.title }}</h1>
     {% if responses %}
-    <h3 class="ui header">You have {{ resoponses }} customers responses.</h3>
-    {% endif %}
+    <h3 class="ui header">You have {{ responses }} customers responses.</h3>
+    {% else %}
     <h3 class="ui header">You have 0 customer response.</h3>
+    {% endif %}
+    
     <h1 class="ui header dividing">Survey result</h1>
     {% for question in questions %}
     <div class="ui basic padded segment left aligned">

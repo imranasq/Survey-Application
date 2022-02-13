@@ -25,3 +25,9 @@ class AnswerForm(forms.Form):
         super().__init__(*args, **kwargs)
         option_field = forms.ChoiceField(choices=choices, widget=forms.RadioSelect, required=True)
         self.fields["option"] = option_field
+
+class BaseAnswerFormSet(forms.BaseFormSet):
+    def get_form_kwargs(self, index):
+        kwargs = super().get_form_kwargs(index)
+        kwargs["options"] = kwargs["options"][index]
+        return kwargs
