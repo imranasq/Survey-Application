@@ -10,7 +10,7 @@
         <div class="container">
             <div class="main-body">
                 {% for user in users %}
-                    {% if user.user_type == 'Admin' %}
+                    {% if user.is_admin %}
                     <div class="row gutters-sm">
                         <div class="col-md-4 mb-3">
                           <div class="card">
