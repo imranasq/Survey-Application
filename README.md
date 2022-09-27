@@ -25,7 +25,7 @@ For creating virtual environment we can use packages like [Virtualenv](https://p
 ```sh
 cd survey-application
 virtualenv venv
-source venv/bin/activte
+source venv/bin/activate
 ```
 Install all required packages.
 
