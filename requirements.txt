@@ -12,3 +12,4 @@ pytz
 sqlparse
 tzdata
 python-dotenv
+pytest-django
