@@ -11,5 +11,5 @@ urlpatterns = [
 ]
 
 # URLs only used when DEBUG = True
-if settings.DEBUG:
-    urlpatterns += [path('__debug__/', include(debug_toolbar.urls)), ]
+# if settings.DEBUG:
+#     urlpatterns += [path('__debug__/', include(debug_toolbar.urls)), ]

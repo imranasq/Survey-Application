@@ -1,21 +1,26 @@
-from distutils.debug import DEBUG
+# from distutils.debug import DEBUG
 import os
-import environ
-import dj_database_url
+from dotenv import load_dotenv
+
+# import environ
+# import dj_database_url
 
 from pathlib import Path
 from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(dotenv_path=BASE_DIR / '.env')
 
-env = environ.Env(DEBUG=(bool, False))
-env_file = os.path.join(BASE_DIR, ".env.keep")
-environ.Env.read_env(env_file)
+# env = environ.Env(DEBUG=(bool, False))
+# env_file = os.path.join(BASE_DIR, ".env")
+# environ.Env.read_env(env_file)
 
 AUTH_USER_MODEL = 'user.User'
-SECRET_KEY = env('SECRET_KEY')
-DEBUG = env('DEBUG', default=(bool, True))
-ALLOWED_HOSTS = env('ALLOWED_HOSTS').split(',')
+SECRET_KEY = os.getenv('SECRET_KEY')
+DEBUG = os.getenv('DEBUG')
+print(f"DEBUG: {DEBUG}")
+print(f"SECRET_KEY: {SECRET_KEY}")
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
 
 INSTALLED_APPS = [
     # core
@@ -94,7 +99,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'conf.wsgi.application'
 
 DATABASES = {
-    'default': dj_database_url.config(default=env('DB_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
+    }
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
