@@ -18,8 +18,6 @@ load_dotenv(dotenv_path=BASE_DIR / '.env')
 AUTH_USER_MODEL = 'user.User'
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG')
-print(f"DEBUG: {DEBUG}")
-print(f"SECRET_KEY: {SECRET_KEY}")
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
 
 INSTALLED_APPS = [
