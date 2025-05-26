@@ -13,3 +13,4 @@ sqlparse
 tzdata
 python-dotenv
 pytest-django
+gunicorn

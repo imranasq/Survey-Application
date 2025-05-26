@@ -99,11 +99,11 @@ WSGI_APPLICATION = 'conf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
+        'NAME': os.getenv('POSTGRES_DB', 'survey_db'),
+        'USER': os.getenv('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres'),
+        'HOST': os.getenv('POSTGRES_HOST', 'survey_db'), 
+        'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
 
@@ -144,12 +144,14 @@ USE_TZ = True
 LOGIN_URL = "/login/"
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-if DEBUG:
-    STATICFILES_DIRS = [os.path.join(os.path.dirname(
-        os.path.dirname(os.path.abspath(__file__))), 'static')]
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# if DEBUG:
+#     STATICFILES_DIRS = [os.path.join(os.path.dirname(
+#         os.path.dirname(os.path.abspath(__file__))), 'static')]
+# else:
+#     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+  # Target directory for collectstatic
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

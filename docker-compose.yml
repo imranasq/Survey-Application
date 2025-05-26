@@ -1,0 +1,32 @@
+services:
+  survey_db:
+    image: postgres:14.3-alpine
+    container_name: survey-db
+    environment:
+      POSTGRES_DB: survey_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+
+  survey_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: survey-app
+    depends_on:
+      - survey_db
+    env_file:
+      - .env
+    volumes:
+      - static_volume:/usr/src/app/static
+      - media_volume:/usr/src/app/media
+    ports:
+      - "8090:80"
+
+volumes:
+  static_volume:
+  media_volume:
+  postgres_data:
