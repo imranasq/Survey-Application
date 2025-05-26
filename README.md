@@ -1,7 +1,7 @@
 # Survey Application
 ## Getting Started
 ### Python Installation
-* The project runs on [Python 3.10](https://www.python.org/downloads/).
+* The project runs on [Python 3.12](https://www.python.org/downloads/).
 
 ### Additional Downloads
 
