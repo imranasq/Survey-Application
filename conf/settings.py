@@ -102,7 +102,7 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB', 'survey_db'),
         'USER': os.getenv('POSTGRES_USER', 'postgres'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres'),
-        'HOST': os.getenv('POSTGRES_HOST', 'survey_db'), 
+        'HOST': os.getenv('POSTGRES_HOST', 'localhost'), 
         'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
@@ -165,3 +165,8 @@ if DEBUG:
         '127.0.0.1',
         'localhost',
     ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8090",
+    "http://localhost:8090",
+]
